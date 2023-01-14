@@ -1,24 +1,30 @@
 import Checkbox from "expo-checkbox";
-import React, { useState, useEffect } from "react";
+import React, { useState, useCallback } from "react";
 import { Text, View, StyleSheet, FlatList } from "react-native";
+import CheckboxComponent from "../components/CheckboxComponent";
+
+const INITIAL_STATE = [
+  { name: "Test", checked: true },
+  { name: "Test2", checked: true },
+  { name: "React", checked: true },
+  { name: "Native", checked: true },
+  { name: "Hello", checked: true },
+  { name: "Cool", checked: true },
+  { name: "tech", checked: true },
+];
 
 const mainScreen = () => {
-  const [array, setArray] = useState([
-    { name: "Test", checked: true },
-    { name: "Test2", checked: true },
-    { name: "React", checked: true },
-    { name: "Native", checked: true },
-    { name: "Hello", checked: true },
-    { name: "Cool", checked: true },
-    { name: "tech", checked: true },
-  ]);
+  const [array, setArray] = useState(INITIAL_STATE);
 
-  const newState = (index:number) => {
-    const newArrayState = [...array];
-    //changes from true to false checked property
-    newArrayState[index].checked = !newArrayState[index].checked;
-    setArray(newArrayState);
-}
+  const newState = useCallback(
+    (index: number) => {
+      const newArrayState = [...array];
+      //changes from true to false checked property
+      newArrayState[index].checked = !newArrayState[index].checked;
+      setArray(newArrayState);
+    },
+    [array]
+  );
 
   return (
     <View>
@@ -27,11 +33,13 @@ const mainScreen = () => {
           data={array}
           horizontal={false}
           renderItem={({ item, index }) => (
-            <View style={{ justifyContent: "center" }}>
+            <View style={styles.flatListView}>
               <Text>{item.name}</Text>
-              <Checkbox
-                value={item.checked}
-                onValueChange={() => newState(index)}
+              <CheckboxComponent
+                index={index}
+                array={array}
+                item={item}
+                newState={newState}
               />
             </View>
           )}
@@ -41,6 +49,8 @@ const mainScreen = () => {
   );
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  flatListView: { justifyContent: "center" },
+});
 
 export default mainScreen;
