@@ -1,5 +1,7 @@
 import { createAppContainer } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
+import { StatusBar } from "expo-status-bar";
+import { StyleSheet, Text, View } from "react-native";
 import mainScreen from "./src/screens/mainScreen";
 
 const navigator = createStackNavigator(
