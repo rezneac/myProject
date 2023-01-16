@@ -1,18 +1,17 @@
 import Checkbox from "expo-checkbox";
-import React, { useState, useCallback } from "react";
-import { Text, View, StyleSheet, FlatList } from "react-native";
+import React from "react";
+import { StyleSheet } from "react-native";
 
 type iProps = {
   index: number;
-  array: object;
-  item: any;
-  newState: any;
+  checkedVal: boolean;
+  newState: (index: number) => void;
 };
 
 const CheckboxComponent = (props: iProps) => {
   return (
     <Checkbox
-      value={props.item.checked}
+      value={props.checkedVal}
       onValueChange={() => props.newState(props.index)}
     />
   );
