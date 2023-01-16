@@ -1,4 +1,3 @@
-import Checkbox from "expo-checkbox";
 import React, { useState, useCallback } from "react";
 import { Text, View, StyleSheet, FlatList } from "react-native";
 import CheckboxComponent from "../components/CheckboxComponent";
@@ -37,8 +36,7 @@ const mainScreen = () => {
               <Text>{item.name}</Text>
               <CheckboxComponent
                 index={index}
-                array={array}
-                item={item}
+                checkedVal={item.checked}
                 newState={newState}
               />
             </View>
