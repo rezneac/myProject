@@ -13,7 +13,7 @@ const navigator = createStackNavigator(
       headerTintColor: "white",
       headerStyle: { elevation: 0, backgroundColor: "#283655" },
 
-      // cardStyle: { backgroundColor: "#1e1f26" },
+      cardStyle: { backgroundColor: "grey" },
     },
   }
 );
