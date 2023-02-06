@@ -1,41 +1,95 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Text,
   View,
   StyleSheet,
   Image,
   TouchableOpacity,
+  Animated,
+  Button,
 } from "react-native";
-import { ProgressBar } from "react-native-paper";
 
 const mainScreen = () => {
+  const [progress, setProgress] = useState(30);
+  const [animatedProgress, setAnimatedProgress] = useState(
+    new Animated.Value(progress)
+  );
+
+  const risingProgress = () => {
+    let payload = 10;
+    let newProgress = progress + payload;
+
+    if (progress + payload <= 100) {
+      setProgress(progress + payload);
+
+      Animated.timing(animatedProgress, {
+        toValue: newProgress,
+        duration: 700,
+        useNativeDriver: false,
+      }).start();
+      setProgress(progress + payload);
+    } else {
+      setProgress(100);
+
+      Animated.timing(animatedProgress, {
+        toValue: 100,
+        duration: 500,
+        useNativeDriver: false,
+      }).start();
+    }
+  };
+
   return (
-    <View style={styles.mainView}>
-      <View style={styles.topView}>
-        <Image source={require("../../assets/imageIcon.png")} />
-        <Text style={styles.text1}>
-          I'm doing 100 Miles to support cardiac care
-        </Text>
-      </View>
+    <>
+      <Button title="Test" onPress={risingProgress} />
+      <View style={styles.mainView}>
+        <View style={styles.topView}>
+          <Image source={require("../../assets/imageIcon.png")} />
+          <Text style={styles.text1}>
+            I'm doing 100 Miles to support cardiac care
+          </Text>
+        </View>
 
-      <View>
-        <Text style={styles.text2}>$86 left to reach $107</Text>
-        <ProgressBar
-          progress={0.5}
-          color={"#1975f2"}
-          style={styles.progresBar}
-        />
-        <Text style={styles.text3}>1 person donated</Text>
+        <View>
+          <Text style={styles.text2}>$86 left to reach $107</Text>
 
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>Donate</Text>
-        </TouchableOpacity>
+          <View style={styles.progressBar}>
+            <Animated.View
+              style={
+                (StyleSheet.absoluteFill,
+                {
+                  backgroundColor: "#1975f2",
+                  width: animatedProgress.interpolate({
+                    inputRange: [0, 100],
+                    outputRange: ["0%", "100%"],
+                  }),
+                  borderRadius: 4,
+                  borderBottomLeftRadius: 4,
+                })
+              }
+            />
+          </View>
+          <Text style={styles.text3}>1 person donated</Text>
+
+          <TouchableOpacity style={styles.button}>
+            <Text style={styles.buttonText}>Donate</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
+  progressBar: {
+    borderRadius: 4,
+    flexDirection: "row",
+    backgroundColor: "#d8d9de",
+    height: 8,
+    marginLeft: 18,
+    marginRight: 18,
+    marginTop: 5,
+  },
   mainView: {
     height: 215,
     width: 300,
@@ -79,13 +133,6 @@ const styles = StyleSheet.create({
     fontSize: 15,
     marginLeft: 18,
     marginTop: 10,
-  },
-  progresBar: {
-    borderRadius: 4,
-    marginLeft: 18,
-    marginRight: 18,
-    height: 8,
-    marginTop: 5,
   },
 });
 
